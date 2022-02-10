@@ -1,0 +1,2 @@
+name: $mavenprop.name$
+java-home: $env.JAVA_HOME$

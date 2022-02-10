@@ -17,6 +17,7 @@
 
 	<properties>
 		<java.version>1.8</java.version>
+		<mavenprop.name>alexscari</mavenprop.name>
 	</properties>
 
 	<dependencies>
@@ -48,10 +49,63 @@
 	</dependencies>
 
 	<build>
+		<resources>
+			<resource>
+				<directory>${project.basedir}/src/main/resources</directory>
+				<!-- 对指定目录下的资源开启动态替换配置 -->
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+
 		<plugins>
+			<!-- 引入parent中声明的spring-boot:repackage插件 -->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+
+			<!-- 将clean-plugin的clean目标绑定到validate阶段中，mvn install时会先执行clean -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-clean-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>clean</id>
+						<goals>
+							<goal>clean</goal>
+						</goals>
+						<phase>validate</phase>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- 使用自定义占位符 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<configuration>
+					<useDefaultDelimiters>false</useDefaultDelimiters>
+					<delimiters>
+						<delimiter>$</delimiter>
+					</delimiters>
+				</configuration>
+			</plugin>
+
+			<!-- surefire-plugin的test目标增加skip参数，等用于maven.test.skip=true -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>default-test</id>
+						<goals>
+							<goal>test</goal>
+						</goals>
+						<configuration>
+							<skip>true</skip>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
