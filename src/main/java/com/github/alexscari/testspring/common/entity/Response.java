@@ -2,10 +2,14 @@ package com.github.alexscari.testspring.common.entity;
 
 import com.github.alexscari.testspring.enums.ResponseEnum;
 
+import java.io.Serializable;
+
 /**
  * @author wusd
  */
-public class Response<T> {
+public class Response<T> implements Serializable {
+
+    private static final long serialVersionUID = -1623694569209876753L;
 
     private String code;
 
